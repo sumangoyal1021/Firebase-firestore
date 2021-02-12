@@ -1,0 +1,94 @@
+<html>
+
+<head>
+    <title>Firebase Storage</title>
+</head>
+<!-- JS, Popper.js, and jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+
+<body>
+    <style> img{ height: 200px; width: 200px; border: 1px solid orangered;} </style>
+    Image Name <input type="text" id="namebox"><br><br>
+    <img id="myimg"> <label id="upProgress"></label><br><br>
+
+    <button id="select">Select Image</button>
+    <button id="upload">Upload Image</button>
+    <button id="retrieve">Retrieve image</button>
+
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-storage.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-database.js"></script>
+
+    <script id="MainScript">
+
+        var ImgName, ImgUrl;
+        var files = [];
+        var reader = new FileReader();
+
+        var firebaseConfig = {
+            apiKey: "AIzaSyAorwFms4cWXhmUjgVw7BczpG8n-BnYr3E",
+            authDomain: "qcode-45886.firebaseapp.com",
+            databaseURL: "https://qcode-45886.firebaseio.com",
+            projectId: "qcode-45886",
+            storageBucket: "qcode-45886.appspot.com",
+            messagingSenderId: "278152110295",
+            appId: "1:278152110295:web:6fc99954946d300755d092",
+            measurementId: "G-8XGK7N4YFS"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+
+        document.getElementById("select").onclick = function(e){
+            var input = document.createElement('input');
+            input.type = 'file';
+
+            input.onchange = e => {
+                files = e.target.files;
+                reader = new FileReader();
+                reader.onload = function(){
+                    document.getElementById('myimg').src = reader.result;
+                }
+                reader.readAsDataURL(files[0]);
+            }
+            input.click();
+        }
+    //   **************Uploading ****************
+         document.getElementById('upload').onclick = function(){
+             ImgName = document.getElementById('namebox').value;
+             var uploadTask = firebase.storage().ref('Images/'+ImgName+".png").put(files[0]);
+             uploadTask.on('state_changed', function(snapshot){
+                 var progress = (snapshot.bytesTrasferred / snapshot.totalBytes) * 100;
+                 document.getElementById('UpProgress').innerHTML = 'upload'+progress+'%';
+
+             },
+             function(error){
+                 alert('error in saving the image');
+             },
+             function(){
+                 uploadTask.snapshot.ref.getDownloadURL().then(function(url){
+                    ImgUrl = url;
+
+                    firebase.database().ref('Pictures/'+ImgName).set({
+                        Name: ImgName,
+                        Link: ImgUrl
+                    });
+                    alert('image added successfully');
+                 });
+             }
+             );
+         }
+ 
+    </script>
+</body>
+
+</html>
