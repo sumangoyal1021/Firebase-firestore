@@ -87,6 +87,16 @@
              }
              );
          }
+        
+                //  ********** Retrieval ****************
+
+        document.getElementById('retrieve').onclick = function(){
+            ImgName = document.getElementById('namebox').value;
+            firebase.database().ref('Pictures/'+ImgName).on('value', function(snapshot){
+                document.getElementById('myimg').src = snapshot.val().Link;
+            });
+        }
+ 
  
     </script>
 </body>
