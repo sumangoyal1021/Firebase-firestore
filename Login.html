@@ -1,0 +1,36 @@
+<html>
+    <head>
+        <title>Login</title>
+
+        <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-app.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-firestore.js"></script>
+        <script src="https://www.gstatic.com/firebasejs/7.18.0/firebase-auth.js"></script>
+        <!-- JS, Popper.js, and jQuery -->
+       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+       
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+        crossorigin="anonymous" />   
+        <script src="Login.js"></script>
+    
+    </head>
+
+    <body>
+
+        <div id="login_div" class="main_div">
+            <h3>Firebase Web Login</h3>
+            <input type="email" placeholder="Email" id="email_field" />
+            <input type="password" placeholder="Password" id="password_field" />
+
+            <button onclick="login()">Login to Account</button>
+        </div>--
+
+        <div id="user_div" class="loggedIn_div">
+            <h3>Welcome user</h3>
+            <p id="user_para">Welcome to Login Page. You are currently LoggedIn</p>
+
+            <button onclick="logout()">LogOut</button>
+        </div>
+
+    </body>
+</html>
